@@ -23,6 +23,8 @@ var FEATURES = ["wifi", "dishwasher", "parking", "washer", "elevator", "conditio
 
 var ads = [];
 var numOfAds = 8;
+var widthOfTheLabel = 40;
+var heightOfTheLabel = 58;
 
 for(var i = 0; i < numOfAds; i++) {
   ads[i] = {
@@ -41,8 +43,8 @@ for(var i = 0; i < numOfAds; i++) {
         photos: []
       },
       location: {
-        x: getRandomArbitrary(300, 900).toFixed(0),
-        y: getRandomArbitrary(100, 500).toFixed(0)
+        x: Number(getRandomArbitrary(300, 900).toFixed(0)) + widthOfTheLabel/2,
+        y: Number(getRandomArbitrary(100, 500).toFixed(0)) + Number(heightOfTheLabel)
       },
     };
   ads[i].offer.address = ads[i].location.x + ", " + ads[i].location.y;
@@ -58,15 +60,15 @@ console.log(ads);
 var map = document.querySelector(".map");
 map.classList.remove("map--faded");
 
-var similarListElement = document.querySelector(".map__pins");
-var similarItemTemplate = document.querySelector("template").content.querySelector(".map__pin");
-var picItem = similarItemTemplate.querySelector("img");
+var similarListPins = document.querySelector(".map__pins");
+var similarPinTemplate = document.querySelector("template").content.querySelector(".map__pin");
 
-var renderAd = function(ads) {
-  var adElement = similarItemTemplate.cloneNode("true");
-  picItem.src = ads.author;
-  adElement.style.left = ads.location.x - 20 + "px";
-  adElement.style.top = ads.location.y - 20 + "px";
+var renderAd = function(ad) {
+  var adElement = similarPinTemplate.cloneNode("true");
+  var picItem = adElement.querySelector("img");
+  adElement.style.left = ad.location.x + "px";
+  adElement.style.top = ad.location.y + "px";
+  picItem.src = ad.author;
 
   return adElement;
 }
@@ -77,4 +79,71 @@ for(var i = 0; i < ads.length; i++) {
   fragment.appendChild(renderAd(ads[i]));
 }
 
-similarListElement.appendChild(fragment);
+similarListPins.appendChild(fragment);
+
+var similarListCards = document.querySelector(".map");
+var similarCardTemplate = document.querySelector("template").content.querySelector(".map__card");
+
+var renderCard = function(card) {
+  var cardElement = similarCardTemplate.cloneNode("true");
+  var cardTitle = cardElement.querySelector("h3").textContent = card.offer.title;
+  var cardAddress = cardElement.querySelector("small").textContent = card.offer.address;
+  var cardPrice = cardElement.querySelector(".popup__price").textContent = card.offer.price + "\u20bd" + "/ночь";
+  var cardTypeOfHouse = cardElement.querySelector("h4");
+
+  switch (card.offer.type) {
+  case "flat":
+    cardTypeOfHouse.textContent = "Квартира";
+    break;
+  case "house":
+    cardTypeOfHouse.textContent = "Дом";
+    break;
+  case "bungalo":
+    cardTypeOfHouse.textContent = "Бунгало";
+    break;
+  default:
+    cardTypeOfHouse.textContent = "Неопознанная лачуга";
+  }
+
+  var cardRoomsAndGuests = cardElement.querySelector("h4 + p").textContent = card.offer.rooms + " комнаты для " + card.offer.guests + " гостей";
+  var cardCheckinCheckoutTime = cardElement.querySelector("h4 + p + p").textContent = "Заезд после " + card.offer.checkin + ", выезд до" + card.offer.checkout;
+
+  var features = cardElement.querySelectorAll(".feature");
+  for (var i = 0; i < features.length; i++) {
+    features[i].style.display = "none";
+  }
+  var featureWifi = cardElement.querySelector(".feature--wifi");
+  var featureDishwasher = cardElement.querySelector(".feature--dishwasher");
+  var featureParking = cardElement.querySelector(".feature--parking");
+  var featureWasher = cardElement.querySelector(".feature--washer");
+  var featureElevator = cardElement.querySelector(".feature--elevator");
+  var featureConditioner = cardElement.querySelector(".feature--conditioner");
+
+  for(var i = 0; i < card.offer.features.length; i++) {
+    if (card.offer.features[i] == "wifi") {
+      featureWifi.style.display = "inline-block";
+    }
+    if (card.offer.features[i] == "dishwasher") {
+      featureDishwasher.style.display = "inline-block";
+    }
+    if (card.offer.features[i] == "parking") {
+      featureParking.style.display = "inline-block";
+    }
+    if (card.offer.features[i] == "washer") {
+      featureWasher.style.display = "inline-block";
+    }
+    if (card.offer.features[i] == "elevator") {
+      featureElevator.style.display = "inline-block";
+    }
+    if (card.offer.features[i] == "conditioner") {
+      featureConditioner.style.display = "inline-block";
+    }
+  }
+  // описание апартаментов пока отсутствует
+  var cardDescription = cardElement.querySelector(".popup__features + p").textContent = card.offer.description;
+  var cardAvatar = cardElement.querySelector(".popup__avatar").src = card.author;
+
+  return cardElement;
+}
+
+similarListCards.appendChild(renderCard(ads[0]));
