@@ -160,6 +160,8 @@ var form = document.querySelector(".notice__form");
 form.classList.add("notice__form--disabled");
 
 var mainPin = document.querySelector(".map__pin--main");
+var ENTER_KEYCODE = 13;
+var ESC_KEYCODE = 27;
 
 var onClickMainPinActivation = function() {
   similarListCards.classList.remove("map--faded");
@@ -172,24 +174,31 @@ var onClickMainPinActivation = function() {
 }
 
 mainPin.addEventListener("mouseup", onClickMainPinActivation);
+
+mainPin.addEventListener("keydown", function(event) {
+  if (event.keyCode == ENTER_KEYCODE) {
+    onClickMainPinActivation();
+  }
+});
+
 var avatarsPopup = document.querySelectorAll(".popup > img");
 
 var onAddClassActive = function(node) {
   var selectedButton = node;
-  if(selectedButton.classList.contains("map__pin--main")) return;  // отмена добавления класса на метку для перетаскивания
+  if (selectedButton.classList.contains("map__pin--main")) return; // отмена добавления класса на метку для перетаскивания
   selectedButton.classList.add("map__pin--active");
-  for(var i = 0; i < avatarsPopup.length; i++) {               // привязка button к article (объявлению)
+  for (var i = 0; i < avatarsPopup.length; i++) { // привязка button к article (объявлению)
     avatarsPopup[i].parentNode.style.display = "none";
-    if(avatarsPopup[i].src === selectedButton.firstElementChild.src) {
+    if (avatarsPopup[i].src === selectedButton.firstElementChild.src) {
       avatarsPopup[i].parentNode.style.display = "block";
     }
   }
 }
 
-similarListPins.addEventListener("click", function(event) {
+var onSearchButton = function(event) {
   var pins = document.querySelectorAll(".map__pin");
 
-  for(var i = 0; i < pins.length; i++) {
+  for (var i = 0; i < pins.length; i++) {
     pins[i].classList.remove("map__pin--active");
   }
 
@@ -202,5 +211,37 @@ similarListPins.addEventListener("click", function(event) {
       return;
     }
     target = target.parentNode;
+  }
+}
+
+similarListPins.addEventListener("click", onSearchButton);
+
+var buttonElements = document.querySelectorAll(".popup__close");
+
+var closePopup = function(evt) {
+  this.parentNode.style.display = "none";
+  var pins = document.querySelectorAll(".map__pin"); // дублирование кода, можно доработать
+  for (var i = 0; i < pins.length; i++) {
+    pins[i].classList.remove("map__pin--active");
+  }
+}
+
+for (var i = 0; i < buttonElements.length; i++) {
+  buttonElements[i].addEventListener("click", closePopup);
+}
+
+var closePopupEsc = function(event) {
+  var pins = document.querySelectorAll(".map__pin");
+  for (var i = 0; i < pins.length; i++) {
+    pins[i].classList.remove("map__pin--active");
+  }
+  for (var i = 0; i < popupCards.length; i++) {
+    popupCards[i].style.display = "none";
+  }
+}
+
+document.addEventListener("keydown", function(event) {
+  if (event.keyCode == ESC_KEYCODE) {
+    closePopupEsc();
   }
 });
