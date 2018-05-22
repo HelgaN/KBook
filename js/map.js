@@ -245,3 +245,68 @@ document.addEventListener("keydown", function(event) {
     closePopupEsc();
   }
 });
+
+var titleInput = document.querySelector("#title");
+
+titleInput.addEventListener("invalid", function() {
+  if (titleInput.validity.tooShort) {
+    titleInput.setCustomValidity("Заголовок должен состоять минимум из 30 символов");
+  } else if (titleInput.validity.tooLong) {
+    titleInput.setCustomValidity("Максимально допустимая длина заголовка - 100 символов");
+  } else if (titleInput.validity.valueMissing) {
+    titleInput.setCustomValidity("Поле \"Заголовок объявления\" является обязательным для заполнения");
+  } else {
+    titleInput.setCustomValidity(" ");
+  }
+});
+
+var priceInput = document.querySelector("#price");
+
+var timeinInput = document.querySelector("#timein");
+var timeoutInput = document.querySelector("#timeout");
+
+timeinInput.addEventListener("change", function() {
+  timeoutInput.selectedIndex = this.selectedIndex;
+});
+
+timeoutInput.addEventListener("change", function() {
+  timeinInput.selectedIndex = this.selectedIndex;
+});
+
+var typeInput = document.querySelector("#type");
+var onSearchMinPrice = function() {
+  for (var i = 0; i < typeInput.options.length; i++) {
+    var option = typeInput.options[i];
+    if (option.selected && option.text == "Лачуга") {
+      priceInput.setAttribute("min", 0);
+    } else if (option.selected && option.text == "Квартира") {
+      priceInput.setAttribute("min", 1000);
+    } else if (option.selected && option.text == "Дом") {
+      priceInput.setAttribute("min", 5000);
+    } else if (option.selected && option.text == "Дворец") {
+      priceInput.setAttribute("min", 10000);
+    }
+  }
+}
+
+typeInput.addEventListener("change", onSearchMinPrice);
+onSearchMinPrice();
+
+priceInput.addEventListener("invalid", function() {
+  var minPrice = priceInput.getAttribute("min");
+  if (priceInput.validity.rangeOverflow) {
+    priceInput.setCustomValidity("Это уже слишком! Максимально допустимая цена за ночь - 1000000 рублей");
+  } else if (priceInput.validity.rangeUnderflow) {
+    if (minPrice == 1000) {
+      priceInput.setCustomValidity("Маловато... Хотя бы 1000 рублей за ночь");
+    } else if (minPrice == 5000) {
+      priceInput.setCustomValidity("Маловато... Хотя бы 5000 рублей за ночь");
+    } else if (minPrice == 10000) {
+      priceInput.setCustomValidity("Маловато... Хотя бы 10000 рублей за ночь");
+    }     /*  priceInput.setCustomValidity("Маловато... Хотя бы 100 рублей за ночь");*/
+  } else if (priceInput.validity.valueMissing) {
+    priceInput.setCustomValidity("Поле \"Цена за ночь\" является обязательным для заполнения");
+  } else {
+    priceInput.setCustomValidity(" ");
+  }
+});
