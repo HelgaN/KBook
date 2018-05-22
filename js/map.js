@@ -303,10 +303,66 @@ priceInput.addEventListener("invalid", function() {
       priceInput.setCustomValidity("Маловато... Хотя бы 5000 рублей за ночь");
     } else if (minPrice == 10000) {
       priceInput.setCustomValidity("Маловато... Хотя бы 10000 рублей за ночь");
-    }     /*  priceInput.setCustomValidity("Маловато... Хотя бы 100 рублей за ночь");*/
+    } /*  priceInput.setCustomValidity("Маловато... Хотя бы 100 рублей за ночь");*/
   } else if (priceInput.validity.valueMissing) {
     priceInput.setCustomValidity("Поле \"Цена за ночь\" является обязательным для заполнения");
   } else {
     priceInput.setCustomValidity(" ");
+  }
+});
+
+var roomNumberInput = document.querySelector("#room_number");
+var capacityInput = document.querySelector("#capacity");
+
+var onSearchCapacity = function() {
+  for (var i = 0; i < roomNumberInput.options.length; i++) {
+    var optionRoom = roomNumberInput.options[i];
+    var optionCapacity1 = capacityInput.options[0];
+    var optionCapacity2 = capacityInput.options[1];
+    var optionCapacity3 = capacityInput.options[2];
+    var optionCapacity4 = capacityInput.options[3];
+
+    if (optionRoom.selected && optionRoom.value == "1") {
+      optionCapacity1.style.display = "none";
+      optionCapacity2.style.display = "none";
+      optionCapacity3.style.display = "block";
+      optionCapacity3.selected = true;
+      optionCapacity4.style.display = "none";
+    } else if (optionRoom.selected && optionRoom.value == "2") {
+      optionCapacity1.style.display = "none";
+      optionCapacity2.style.display = "block";
+      optionCapacity2.selected = true;
+      optionCapacity3.style.display = "block";
+      optionCapacity4.style.display = "none";
+    } else if (optionRoom.selected && optionRoom.value == "3") {
+      optionCapacity1.style.display = "block";
+      optionCapacity1.selected = true;
+      optionCapacity2.style.display = "block";
+      optionCapacity4.style.display = "none";
+      optionCapacity3.style.display = "block";
+    } else if (optionRoom.selected && optionRoom.value == "100") {
+      optionCapacity1.style.display = "none";
+      optionCapacity2.style.display = "none";
+      optionCapacity3.style.display = "none";
+      optionCapacity4.style.display = "block";
+      optionCapacity4.selected = true;
+    }
+  }
+}
+
+onSearchCapacity();
+
+roomNumberInput.addEventListener("change", onSearchCapacity);
+
+form.addEventListener("click", function(evt) {
+
+  var elems = document.querySelectorAll("input[required]");
+  for (var i = 0; i < elems.length; i++) {
+    if(elems[i].validity.valid == false) {
+      evt.preventDefault();
+      elems[i].style.outline = "3px solid red";
+    } else {
+      elems[i].style.outline = "none";
+    }
   }
 });
