@@ -205,7 +205,7 @@ var onSearchButton = function(event) {
   var target = event.target;
   // цикл двигается вверх от target к родителям до similarListPins
   while (target != this) {
-    if (target.tagName == "BUTTON") {
+    if (target.tagName.toLowerCase() == "button") {
       // нашли целевой элемент
       onAddClassActive(target);
       return;
@@ -355,10 +355,9 @@ onSearchCapacity();
 roomNumberInput.addEventListener("change", onSearchCapacity);
 
 form.addEventListener("click", function(evt) {
-
   var elems = document.querySelectorAll("input[required]");
   for (var i = 0; i < elems.length; i++) {
-    if(elems[i].validity.valid == false) {
+    if (elems[i].validity.valid == false) {
       evt.preventDefault();
       elems[i].style.outline = "3px solid red";
     } else {
@@ -366,3 +365,58 @@ form.addEventListener("click", function(evt) {
     }
   }
 });
+
+var addressInput = document.querySelector("#address");
+
+var limits = {
+  topMin: 100,
+  topMax: 500
+};
+
+console.log(limits);
+
+mainPin.addEventListener("mousedown", function(evt) {
+  evt.preventDefault();
+
+  var startCoords = {
+    x: evt.pageX,
+    y: evt.pageY
+  }
+
+  addressInput.value = "x: " + startCoords.x + ", y: " + startCoords.y;
+
+  console.log(startCoords);
+
+  var onMouseMove = function(evtMove) {
+    evtMove.preventDefault();
+    var shift = {
+      x: evtMove.pageX,
+      y: evtMove.pageY
+    }
+
+    if (shift.y > limits.topMax) {
+      shift.y = limits.bottom;
+    } else if (shift.y < limits.topMin) {
+      shift.y = limits.topMin;
+    }
+
+    startCoords = {
+      x: evtMove.pageX,
+      y: evtMove.pageY
+    }
+
+    mainPin.style.top = shift.y + "px";
+    mainPin.style.left = shift.x + "px";
+  }
+
+  var onMouseUp = function(evtUp) {
+    map.removeEventListener("mousemove", onMouseMove);
+    map.removeEventListener("mouseup", onMouseUp);
+  }
+
+  map.addEventListener("mousemove", onMouseMove);
+  map.addEventListener("mouseup", onMouseUp);
+
+})
+
+// Доработать! Соответствие координат острому концу метки
