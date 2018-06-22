@@ -1,49 +1,48 @@
 "use strict";
 
 (function() {
-  var limits = {
-    topMin: 100,
-    topMax: 500
-  };
-
   var addressInput = document.querySelector("#address");
   var mainPin = document.querySelector(".map__pin--main");
   var map = document.querySelector(".map");
 
-  console.log(limits);
+  var limits = {
+    topMin: 100,
+    topMax: 600,
+  };
 
   mainPin.addEventListener("mousedown", function(evt) {
     evt.preventDefault();
 
     var startCoords = {
-      x: evt.pageX,
+      x: evt.pageX - map.offsetLeft,
       y: evt.pageY
     }
 
-    addressInput.value = "x: " + startCoords.x + ", y: " + startCoords.y;
+    var adressY = mainPin.offsetHeight + mainPin.offsetTop;
 
-    console.log(startCoords);
+    addressInput.value = "x: " + startCoords.x + ", y: " + adressY;
 
     var onMouseMove = function(evtMove) {
       evtMove.preventDefault();
+
       var shift = {
         x: evtMove.pageX,
         y: evtMove.pageY
       }
 
       if (shift.y > limits.topMax) {
-        shift.y = limits.bottom;
+        shift.y = limits.topMax;
       } else if (shift.y < limits.topMin) {
         shift.y = limits.topMin;
       }
 
       startCoords = {
-        x: evtMove.pageX,
-        y: evtMove.pageY
+        x: evt.pageX,
+        y: evt.pageY
       }
 
       mainPin.style.top = shift.y + "px";
-      mainPin.style.left = shift.x + "px";
+      mainPin.style.left = shift.x - map.offsetLeft + "px";
     }
 
     var onMouseUp = function(evtUp) {

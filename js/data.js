@@ -40,7 +40,5 @@ for (var i = 0; i < numOfAds; i++) {
   }
 }
 
-console.log(ads);
-
 var ENTER_KEYCODE = 13;
 var ESC_KEYCODE = 27;
