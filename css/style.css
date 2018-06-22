@@ -392,6 +392,10 @@ textarea:focus {
   vertical-align: middle;
 }
 
+.popup__pictures img {
+  width: 50px;
+}
+
 .popup__avatar {
   position: absolute;
   bottom: 100%;

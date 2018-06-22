@@ -41,6 +41,9 @@
         y: evt.pageY
       }
 
+      adressY = mainPin.offsetHeight + mainPin.offsetTop;
+      var adressX = shift.x - map.offsetLeft;
+      addressInput.value = "x: " + adressX + ", y: " + adressY;
       mainPin.style.top = shift.y + "px";
       mainPin.style.left = shift.x - map.offsetLeft + "px";
     }
@@ -54,7 +57,5 @@
     map.addEventListener("mouseup", onMouseUp);
 
   })
-
-  // Доработать! Соответствие координат острому концу метки
 
 })();
