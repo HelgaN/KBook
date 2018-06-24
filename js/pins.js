@@ -31,8 +31,9 @@
   filter.addEventListener("change", function() {
     var pins = document.querySelectorAll(".map__pin");
     pins.forEach(function(item, j, arr) {
-        pins[j].style.display = "none";
-      });
+      if(!pins[j].classList.contains("map__pin--main"))
+      pins[j].style.display = "none";
+    });
 
     filterTypes.forEach(function(item, i, arr) {
       if (filterTypes[i].selected) {
@@ -42,7 +43,6 @@
             filterTypes[i].innerText = "Бунгало";
           }
           if (filterTypes[i].innerText == cardsTitles[k].innerText) {
-            console.log(cardsTitles[k].parentNode.classList.length)
             var length = cardsTitles[k].parentNode.classList.length;
             var className = cardsTitles[k].parentNode.classList[length - 1];
             console.log(className)
@@ -53,6 +53,13 @@
               }
             });
           };
+        }
+
+        if(filterTypes[i].value == "any") {
+          var pins = document.querySelectorAll(".map__pin");
+          pins.forEach(function(itemPin, numPin, arrPin) {
+            pins[numPin].style.display = "block";
+          });
         }
 
       }
