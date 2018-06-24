@@ -100,6 +100,8 @@
         }
       }
     };
+    document.querySelector(".map__card.item6").classList.remove("item10");
+    document.querySelector(".map__card.item10").classList.remove("item6");
   }
 
   var onAddClassActive = function(node) {
@@ -109,7 +111,12 @@
     selectedButton.classList.add("map__pin--active");
     for (var i = 0; i < avatarsPopup.length; i++) { // привязка button к article (объявлению)
       avatarsPopup[i].parentNode.style.display = "none";
-      if (avatarsPopup[i].src === selectedButton.firstElementChild.src) {
+      var length = avatarsPopup[i].parentNode.classList.length;
+      var className = avatarsPopup[i].parentNode.classList[length - 1];
+      var lengthClassesButton = selectedButton.classList.length;
+      var classNameButton = selectedButton.classList[length - 2];
+
+      if (className == classNameButton) {
         avatarsPopup[i].parentNode.style.display = "block";
         var buttonElements = document.querySelectorAll(".popup__close");
         buttonElements.forEach(function(item, i, arr) {
