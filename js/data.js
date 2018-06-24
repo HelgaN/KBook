@@ -7,7 +7,7 @@ var TIMES = ["12:00", "13:00", "14:00"];
 var FEATURES = ["wifi", "dishwasher", "parking", "washer", "elevator", "conditioner"];
 
 var ads = [];
-var numOfAds = 8;
+var numOfAds = 10;
 var widthOfTheLabel = 40;
 var heightOfTheLabel = 58;
 /*
