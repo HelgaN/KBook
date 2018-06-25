@@ -61,7 +61,7 @@ var updateAds = function(data) {
         price: data[i].offer.price,
         type: data[i].offer.type,
         rooms: data[i].offer.rooms,
-        guests: data[i].offer.quests,
+        guests: data[i].offer.guests,
         checkin: data[i].offer.checkin,
         checkout: data[i].offer.checkout,
         features: data[i].offer.features,
