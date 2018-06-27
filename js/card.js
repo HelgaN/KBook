@@ -100,8 +100,10 @@
         }
       }
     };
-    document.querySelector(".map__card.item6").classList.remove("item10");
-    document.querySelector(".map__card.item10").classList.remove("item6");
+    setTimeout(function() {
+      document.querySelector(".map__card.item6").classList.remove("item10");
+      document.querySelector(".map__card.item10").classList.remove("item6");
+    }, 1000);
   }
 
   var onAddClassActive = function(node) {
