@@ -27,7 +27,6 @@
   var filterFuaters = document.querySelector("#housing-features");
   var filterFuatersInputs = document.querySelectorAll("#housing-features inputs");
 
-
   var searchValue = function(value, arr) {
     arr.forEach(function(item, i, arr) {
       if (arr[i].selected) {
@@ -38,6 +37,8 @@
     });
     return value;
   }
+
+  // определенно нужен рефакторинг, но пока так :)
 
   formFilter.addEventListener("change", function() {
 
@@ -88,11 +89,6 @@
       twoGuest = true;
     }
 
-    console.log(anyGuest, oneGuest, twoGuest)
-    console.log(valueHouse);
-    console.log(valuePrice);
-    console.log(valueRoom);
-    console.log(valueGuest);
     var cardPopups = document.querySelectorAll(".map__card");
     var mapPins = document.querySelectorAll(".map__pin");
     var mass = [];
@@ -100,6 +96,12 @@
     var obj2 = [];
     var obj3 = [];
     var obj4 = [];
+    var filterWifi = {};
+    var filterDishwasher = {};
+    var filterParking = {};
+    var filterWasher = {};
+    var filterElevator = {};
+    var filterConditioner = {};
 
     cardPopups.forEach(function(item, i, arr) {
       var housePopup = cardPopups[i].querySelector("h4");
@@ -156,18 +158,86 @@
         obj4[mass[i]] = false;
       }
 
+      var wifi = cardPopups[i].querySelector(".feature--wifi");
 
+      var wifiValue = false;
+      if(wifi.style.display != "none") {
+        wifiValue = true;
+      };
 
+      var dishwasher = cardPopups[i].querySelector(".feature--dishwasher");
+      var dishwasherValue = false;
+      if(dishwasher.style.display != "none") {
+        dishwasherValue = true;
+      };
 
+      var parking = cardPopups[i].querySelector(".feature--parking");
+      var parkingValue = false;
+      if(parking.style.display != "none") {
+        parkingValue = true;
+      };
 
+      var washer = cardPopups[i].querySelector(".feature--washer");
+      var washerValue = false;
+      if(washer.style.display != "none") {
+        washerValue = true;
+      };
 
+      var elevator = cardPopups[i].querySelector(".feature--elevator");
+      var elevatorValue = false;
+      if(elevator.style.display != "none") {
+        elevatorValue = true;
+      };
+
+      var conditioner = cardPopups[i].querySelector(".feature--conditioner");
+      var conditionerValue = false;
+      if(conditioner.style.display != "none") {
+        conditionerValue = true;
+      };
+
+      var formWifi = document.querySelector("#filter-wifi");
+      var formDishwasher = document.querySelector("#filter-dishwasher");
+      var formParking = document.querySelector("#filter-parking");
+      var formWasher = document.querySelector("#filter-washer");
+      var formElevator = document.querySelector("#filter-elevator");
+      var formConditioner = document.querySelector("#filter-conditioner");
+
+      if(formWifi.checked == wifiValue) {
+        filterWifi[mass[i]] = i;
+      } else {
+        filterWifi[mass[i]] = false;
+      }
+
+      if(formDishwasher.checked == dishwasherValue) {
+        filterDishwasher[mass[i]] = i;
+      } else {
+        filterDishwasher[mass[i]] = false;
+      }
+
+      if(formParking.checked == parkingValue) {
+        filterParking[mass[i]] = i;
+      } else {
+        filterParking[mass[i]] = false;
+      }
+
+      if(formWasher.checked == washerValue) {
+        filterWasher[mass[i]] = i;
+      } else {
+        filterWasher[mass[i]] = false;
+      }
+
+      if(formElevator.checked == elevatorValue) {
+        filterElevator[mass[i]] = i;
+      } else {
+        filterElevator[mass[i]] = false;
+      }
+
+      if(formConditioner.checked == conditionerValue) {
+        filterConditioner[mass[i]] = i;
+      } else {
+        filterConditioner[mass[i]] = false;
+      }
     });
-
-
-
-
-
-
 
 // num+1 как и i+1 из-за mainPin
 
@@ -176,10 +246,54 @@
       var index2 = obj2[num];
       var index3 = obj3[num];
       var index4 = obj4[num];
+      var wifi = filterWifi[num];
+      var dishwasher = filterDishwasher[num];
+      var parking = filterParking[num];
+      var washer = filterWasher[num];
+      var elevator = filterElevator[num];
+      var conditioner = filterConditioner[num];
+
+      var formWifi = document.querySelector("#filter-wifi");
+      var formDishwasher = document.querySelector("#filter-dishwasher");
+      var formParking = document.querySelector("#filter-parking");
+      var formWasher = document.querySelector("#filter-washer");
+      var formElevator = document.querySelector("#filter-elevator");
+      var formConditioner = document.querySelector("#filter-conditioner");
 
       if((num + 1) < mapPins.length) {
         if (index && index2 && index3 && index4) {
           mapPins[num + 1].style.display = "block";
+          if(wifi && formWifi.checked || !formWifi.checked) {
+            mapPins[num + 1].style.display = "block";
+            if(dishwasher && formDishwasher.checked || !formDishwasher.checked) {
+              mapPins[num + 1].style.display = "block";
+              if(parking && formParking.checked || !formParking.checked) {
+                mapPins[num + 1].style.display = "block";
+                if(parking && formWasher.checked || !formWasher.checked) {
+                  mapPins[num + 1].style.display = "block";
+                  if(parking && formElevator.checked || !formElevator.checked) {
+                    mapPins[num + 1].style.display = "block";
+                    if(parking && formConditioner.checked || !formConditioner.checked) {
+                      mapPins[num + 1].style.display = "block";
+                    } else {
+                      mapPins[num + 1].style.display = "none";
+                    }
+                  } else {
+                    mapPins[num + 1].style.display = "none";
+                  }
+                } else {
+                  mapPins[num + 1].style.display = "none";
+                }
+              } else {
+                mapPins[num + 1].style.display = "none";
+              }
+            } else {
+              mapPins[num + 1].style.display = "none";
+            }
+          } else {
+            mapPins[num + 1].style.display = "none";
+          }
+
         } else {
             mapPins[num + 1].style.display = "none";
           }
@@ -187,25 +301,6 @@
 
     });
 
-
-
-
-
-
-
-
-
-
-
-
   });
-
-
-
-
-
-
-
-
 
 })();
