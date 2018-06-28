@@ -626,7 +626,7 @@ textarea:focus {
   flex-wrap: wrap;
 }
 
-.upload {
+.form__photo-container .upload {
   width: 140px;
 }
 
