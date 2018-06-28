@@ -621,7 +621,17 @@ textarea:focus {
 }
 
 .form__photo-container {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.upload {
   width: 140px;
+}
+
+.form__photo-container img {
+  height: 120px;
 }
 
 .form__element--submit {
